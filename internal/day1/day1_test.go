@@ -16,11 +16,11 @@ func TestDay1(t *testing.T) {
 
 	sum := Day1(string(file))
 	if sum != answer1 {
-		t.Fatalf("Day 1 sum must be %d, but instead it is %d", answer1, sum)
+		t.Fatalf("Day 1 sum must be %d, but instead got %d", answer1, sum)
 	}
 
 	sum = Day1_2(string(file))
 	if sum != answer2 {
-		t.Fatalf("Day 1_2 sum must be %d, but instead it is %d", answer2, sum)
+		t.Fatalf("Day 1_2 sum must be %d, but instead got %d", answer2, sum)
 	}
 }
