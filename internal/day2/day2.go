@@ -28,19 +28,13 @@ GameLoop:
 					panic(err)
 				}
 
-				switch cubeParts[1] {
-				case "red":
-					if cubeNumber > 12 {
-						continue GameLoop
-					}
-				case "green":
-					if cubeNumber > 13 {
-						continue GameLoop
-					}
-				case "blue":
-					if cubeNumber > 14 {
-						continue GameLoop
-					}
+				switch {
+				case cubeParts[1] == "red" && cubeNumber > 12:
+					fallthrough
+				case cubeParts[1] == "green" && cubeNumber > 13:
+					fallthrough
+				case cubeParts[1] == "blue" && cubeNumber > 14:
+					continue GameLoop
 				}
 			}
 		}
@@ -58,9 +52,9 @@ func Day2_2(input string) int {
 		line := scanner.Text()
 		game := strings.Split(line, ": ")
 
-        red := 0
-        green := 0
-        blue := 0
+		red := 0
+		green := 0
+		blue := 0
 		for _, subset := range strings.Split(game[1], "; ") {
 			for _, cube := range strings.Split(subset, ", ") {
 				cubeParts := strings.Split(cube, " ")
@@ -69,19 +63,13 @@ func Day2_2(input string) int {
 					panic(err)
 				}
 
-				switch cubeParts[1] {
-				case "red":
-                    if cubeNumber > red {
-                        red = cubeNumber
-                    }
-				case "green":
-                    if cubeNumber > green {
-                        green = cubeNumber
-                    }
-				case "blue":
-                    if cubeNumber > blue {
-                        blue = cubeNumber
-                    }
+				switch {
+				case cubeParts[1] == "red" && cubeNumber > red:
+					red = cubeNumber
+				case cubeParts[1] == "green" && cubeNumber > green:
+					green = cubeNumber
+				case cubeParts[1] == "blue" && cubeNumber > blue:
+					blue = cubeNumber
 				}
 			}
 		}
