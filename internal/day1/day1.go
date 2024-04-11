@@ -19,60 +19,53 @@ var digits = map[string]int{
 }
 
 func parseLine(line string) int {
-	runes := []rune(line)
 	firstDigit := -1
 	lastDigit := -1
-	for i, j := 0, len(runes)-1; i < len(runes); i, j = i+1, j-1 {
-		if firstDigit == -1 {
-			if unicode.IsDigit(runes[i]) {
-				firstDigit = int(runes[i] - '0')
+
+	for _, char := range line {
+		if unicode.IsDigit(char) {
+			lastDigit = int(char - '0')
+			if firstDigit == -1 {
+				firstDigit = lastDigit
 			}
-		}
-		if lastDigit == -1 {
-			if unicode.IsDigit(runes[j]) {
-				lastDigit = int(runes[j] - '0')
-			}
-		}
-		if firstDigit != -1 && lastDigit != -1 {
-			break
 		}
 	}
+
 	return firstDigit*10 + lastDigit
 }
 
 func parseLine2(line string) int {
-	runes := []rune(line)
 	firstDigit := -1
 	lastDigit := -1
-	for i, j := 0, len(runes)-1; i < len(runes); i, j = i+1, j-1 {
-		if firstDigit == -1 {
-			if unicode.IsDigit(runes[i]) {
-				firstDigit = int(runes[i] - '0')
-			} else {
-				for word, digit := range digits {
-					if i+len(word) >= len(runes) || string(runes[i:i+len(word)]) != word {
-						continue
-					}
-					firstDigit = digit
-				}
+
+	firstDigitIndex := -1
+	lastDigitIndex := -1
+
+	for i, char := range line {
+		if unicode.IsDigit(char) {
+			lastDigit = int(char - '0')
+			lastDigitIndex = i
+			if firstDigit == -1 {
+				firstDigit = lastDigit
+				firstDigitIndex = i
 			}
-		}
-		if lastDigit == -1 {
-			if unicode.IsDigit(runes[j]) {
-				lastDigit = int(runes[j] - '0')
-			} else {
-				for word, digit := range digits {
-					if j-len(word) < 0 || string(runes[j-len(word)+1:j+1]) != word {
-						continue
-					}
-					lastDigit = digit
-				}
-			}
-		}
-		if firstDigit != -1 && lastDigit != -1 {
-			break
 		}
 	}
+
+	for word, digit := range digits {
+		fIdx := strings.Index(line, word)
+		lIdx := strings.LastIndex(line, word)
+
+		if fIdx > -1 && fIdx < firstDigitIndex {
+			firstDigit = digit
+			firstDigitIndex = fIdx
+		}
+		if lIdx > -1 && lIdx > lastDigitIndex {
+			lastDigit = digit
+			lastDigitIndex = lIdx
+		}
+	}
+
 	return firstDigit*10 + lastDigit
 }
 
